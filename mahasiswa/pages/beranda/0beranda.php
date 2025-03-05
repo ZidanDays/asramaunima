@@ -17,10 +17,8 @@ if ($_POST) {
     $conn->query("UPDATE users SET id_kamar=$kamar_id WHERE id=$idMhs");
     echo "<script>alert('Pemesanan berhasil, silakan lakukan pembayaran Ke Operator.');</script>";
 }
-$asramas = $conn->query("SELECT kamar.*, asrama.nama, asrama.kapasitas FROM kamar JOIN asrama ON kamar.asrama_id = asrama.id
+$kamars = $conn->query("SELECT kamar.*, asrama.nama, asrama.kapasitas FROM kamar JOIN asrama ON kamar.asrama_id = asrama.id
  WHERE kamar.status='kosong'");
-
-
 ?>
 
 <div class="main-panel">
@@ -40,22 +38,14 @@ $asramas = $conn->query("SELECT kamar.*, asrama.nama, asrama.kapasitas FROM kama
                             <input type="text" name="mahasiswa" class="form-control" required>
                         </div> -->
                         <div class="form-group">
-                            <label>Asrama</label>
-                            <select name="asrama_id" id="asrama_id" class="form-control" required
-                                onchange="getKamarKosong()">
-                                <option value="">-- Pilih Asrama --</option>
-                                <?php 
-        $asramas = $conn->query("SELECT * FROM asrama");
-        while ($row = $asramas->fetch_assoc()) : ?>
-                                <option value="<?= $row['id'] ?>">Asrama <?= $row['nama'] ?></option>
-                                <?php endwhile; ?>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
                             <label>Kamar</label>
-                            <select name="kamar_id" id="kamar_id" class="form-control" required>
+                            <select name="kamar_id" class="form-control" required>
                                 <option value="">-- Pilih Kamar --</option>
+                                <?php while ($row = $kamars->fetch_assoc()) : ?>
+                                <option value="<?= $row['id'] ?>">Kamar <?= $row['nomor_kamar'] ?> Asrama
+                                    <?=$row['nama'] ?>
+                                </option>
+                                <?php endwhile; ?>
                             </select>
                         </div>
 
@@ -68,26 +58,3 @@ $asramas = $conn->query("SELECT kamar.*, asrama.nama, asrama.kapasitas FROM kama
     </div>
     <?php include 'partials/footer.php'; ?>
 </div>
-<script>
-function getKamarKosong() {
-    var asrama_id = document.getElementById("asrama_id").value;
-    var kamarSelect = document.getElementById("kamar_id");
-
-    // Kosongkan dropdown kamar terlebih dahulu
-    kamarSelect.innerHTML = '<option value="">-- Pilih Kamar --</option>';
-
-    if (asrama_id) {
-        fetch('get_kamar.php?asrama_id=' + asrama_id)
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(kamar => {
-                    var option = document.createElement("option");
-                    option.value = kamar.id;
-                    option.textContent = "Kamar " + kamar.nomor_kamar;
-                    kamarSelect.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error fetching kamar:', error));
-    }
-}
-</script>

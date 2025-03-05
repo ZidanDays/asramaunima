@@ -3,6 +3,8 @@ include '../conf/conf.php';
 
 if (isset($_GET['id'])) {
     $id = intval($_GET['id']); // Pastikan id adalah integer
+    $idKmr = intval($_GET['idKmr']); // Pastikan id adalah integer
+    $conn->query("UPDATE kamar SET status='terisi' WHERE id=$idKmr");
     $verifiedStatus = encryptData('verified'); // Enkripsi 'verified'
 
     if ($verifiedStatus) { // Pastikan enkripsi berhasil
@@ -23,7 +25,7 @@ if (isset($_GET['id'])) {
 
 // Ambil data pemesanan dengan informasi kamar dan mahasiswa
 $pemesanan = $conn->query("
-SELECT pemesanan_kamar.*, kamar.nomor_kamar, users.nama, asrama.nama AS na
+SELECT pemesanan_kamar.*, kamar.nomor_kamar, users.nama, users.nim, users.tempat_lahir, users.no_hp, users.jurusan, users.fakultas,  asrama.nama AS na
 FROM pemesanan_kamar
 JOIN kamar ON pemesanan_kamar.kamar_id = kamar.id
 JOIN users ON users.id_kamar = kamar.id
@@ -41,49 +43,62 @@ JOIN asrama ON kamar.asrama_id = asrama.id
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Mahasiswa</th>
-                                <th>Asrama</th>
-                                <th>Nomor Kamar</th>
-                                <th>Status Pembayaran</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $no = 1;
-                            while ($row = $pemesanan->fetch_assoc()) {
-                                $status_pembayaran = decryptData($row['status_pembayaran']);
+                    <div class="table-responsive">
+                        <!-- Tambahkan div ini -->
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>NIM</th>
+                                    <th>Tempat Lahir</th>
+                                    <th>No HP</th>
+                                    <th>Jurusan</th>
+                                    <th>Fakultas</th>
+                                    <th>Asrama</th>
+                                    <th>Nomor Kamar</th>
+                                    <th>Status Pembayaran</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $no = 1;
+                                while ($row = $pemesanan->fetch_assoc()) {
+                                    $status_pembayaran = decryptData($row['status_pembayaran']);
 
-                                // Jika decryptData gagal, tampilkan pesan default
-                                if (!$status_pembayaran) {
-                                    $status_pembayaran = "[Data Tidak Valid]";
+                                    // Jika decryptData gagal, tampilkan pesan default
+                                    if (!$status_pembayaran) {
+                                        $status_pembayaran = "[Data Tidak Valid]";
+                                    }
+
+                                    echo "<tr>
+                                        <td>{$no}</td>
+                                        <td>{$row['nama']}</td>
+                                        <td>{$row['nim']}</td>
+                                        <td>{$row['tempat_lahir']}</td>
+                                        <td>{$row['no_hp']}</td>
+                                        <td>{$row['jurusan']}</td>
+                                        <td>{$row['fakultas']}</td>
+                                        <td>{$row['na']}</td>
+                                        <td>{$row['nomor_kamar']}</td>
+                                        <td>{$status_pembayaran}</td>
+                                        <td>";
+
+                                    // Tombol verifikasi hanya muncul jika belum 'verified'
+                                    if ($status_pembayaran !== 'verified') {
+                                        echo "<a href='?id={$row['id']}&idKmr={$row['kamar_id']}' class='btn btn-warning btn-sm' onclick='return confirm(\"Yakin ingin memverifikasi pembayaran ini?\")'>Verifikasi</a>";
+                                    } else {
+                                        echo "<span class='badge badge-success'>Terverifikasi</span>";
+                                    }
+
+                                    echo "</td></tr>";
+                                    $no++;
                                 }
-
-                                echo "<tr>
-                                    <td>{$no}</td>
-                                    <td>{$row['nama']}</td>
-                                    <td>{$row['na']}</td>
-                                    <td>{$row['nomor_kamar']}</td>
-                                    <td>{$status_pembayaran}</td>
-                                    <td>";
-
-                                // Tombol verifikasi hanya muncul jika belum 'verified'
-                                if ($status_pembayaran !== 'verified') {
-                                    echo "<a href='?id={$row['id']}' class='btn btn-warning btn-sm' onclick='return confirm(\"Yakin ingin memverifikasi pembayaran ini?\")'>Verifikasi</a>";
-                                } else {
-                                    echo "<span class='badge badge-success'>Terverifikasi</span>";
-                                }
-
-                                echo "</td></tr>";
-                                $no++;
-                            }
-                            ?>
-                        </tbody>
-                    </table>
+                                ?>
+                            </tbody>
+                        </table>
+                    </div> <!-- Akhir table-responsive -->
                 </div>
             </div>
         </div>

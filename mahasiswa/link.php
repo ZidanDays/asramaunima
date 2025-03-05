@@ -5,18 +5,18 @@ if (!empty($page)) {
 
 
         //asrama
-        case 'asrama':
-            include './pages/asrama/index.php';
-            break; 
-        case 'asrama-tambah':
-            include './pages/asrama/tambah.php';
-            break; 
-        case 'asrama-edit':
-            include './pages/asrama/edit.php';
-            break; 
-        case 'asrama-hapus':
-            include './pages/asrama/hapus.php';
-            break; 
+        // case 'asrama':
+        //     include './pages/asrama/index.php';
+        //     break; 
+        // case 'asrama-tambah':
+        //     include './pages/asrama/tambah.php';
+        //     break; 
+        // case 'asrama-edit':
+        //     include './pages/asrama/edit.php';
+        //     break; 
+        // case 'asrama-hapus':
+        //     include './pages/asrama/hapus.php';
+        //     break; 
         //end of asrama
 
             
@@ -34,6 +34,18 @@ if (!empty($page)) {
             include './pages/kamar/hapus.php';
             break; 
         //end of kamar
+
+
+        //kamar saya        
+        case 'kamar-saya':
+            include './pages/kamar-saya/index.php';
+            break;
+
+        case 'kamar-saya-hapus':
+            include './pages/kamar-saya/hapus.php';
+            break;
+
+        //end of kamar saya
 
         case 'logout':
             include './pages/logout/logout.php';

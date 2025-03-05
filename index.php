@@ -95,11 +95,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         IN</button>
                                 </div>
                                 <div class="my-2 d-flex justify-content-between align-items-center">
-                                    <a href="#" class="auth-link text-black">Forgot password?</a>
+                                    <!-- <a href="#" class="auth-link text-black">Forgot password?</a> -->
                                 </div>
                                 <div class="text-center mt-4 font-weight-light">
-                                    Don't have an account?
-                                    <a href="register.php" class="text-primary">Create</a>
+                                    <!-- Don't have an account? -->
+                                    Tidak punya akun?,
+                                    <a href="register.php" class="text-primary">Buat</a>
                                 </div>
                             </form>
                         </div>

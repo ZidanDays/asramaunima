@@ -2,18 +2,18 @@
 include '../conf/conf.php';
 
 if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $result = $conn->query("SELECT * FROM kamar WHERE asrma_id = $id");
+    $id = (int) $_GET['id']; // Menghindari SQL Injection dengan casting ke integer
+    $result = $conn->query("SELECT kamar.*, asrama.nama AS nama_asrama FROM 
+        kamar JOIN asrama ON kamar.asrama_id = asrama.id WHERE kamar.id = $id");
     $data = $result->fetch_assoc();
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nama = $_POST['nama_asrama'];
-    $kapasitas = $_POST['kapasitas'];
+    $status = $conn->real_escape_string($_POST['status']); // Mencegah SQL Injection
 
-    $query = "UPDATE asrama SET nama='$nama', kapasitas='$kapasitas' WHERE id=$id";
+    $query = "UPDATE kamar SET status='$status' WHERE id=$id";
     if ($conn->query($query) === TRUE) {
-        echo "<script>alert('Data berhasil diupdate'); window.location='index.php?q=asrama';</script>";
+        echo "<script>alert('Data berhasil diupdate'); window.location='index.php?q=kamar';</script>";
     } else {
         echo "<script>alert('Gagal mengupdate data');</script>";
     }
@@ -24,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="content-wrapper">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2 class="text-dark font-weight-bold">Daftar Asrama</h2>
-            <!-- <a href="tambah.php" class="btn btn-primary">+ Tambah Asrama</a> -->
         </div>
 
         <div class="col-lg-12 grid-margin stretch-card">
@@ -34,16 +33,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <form method="POST">
                         <div class="form-group">
                             <label>Nama Asrama</label>
-                            <input type="text" name="nama_asrama" class="form-control"
-                                value="<?php echo htmlspecialchars($data['nama']); ?>" required>
+                            <input type="text" name="nama_asrama" class="form-control" readonly
+                                value="<?php echo htmlspecialchars($data['nama_asrama'] ?? ''); ?>" required>
                         </div>
                         <div class="form-group">
-                            <label>Kapasitas</label>
-                            <input type="number" name="kapasitas" class="form-control"
-                                value="<?php echo htmlspecialchars($data['kapasitas']); ?>" required>
+                            <label>Nomor Kamar</label>
+                            <input type="text" name="nomor_kama" class="form-control" readonly
+                                value="<?php echo htmlspecialchars($data['nomor_kamar'] ?? ''); ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select name="status" class="form-control">
+                                <option value="<?php echo htmlspecialchars($data['status'] ?? ''); ?>">
+                                    <?php echo htmlspecialchars($data['status'] ?? 'Pilih Status'); ?>
+                                </option>
+                                <option value="kosong">kosong</option>
+                                <option value="terisi">terisi</option>
+                            </select>
                         </div>
                         <button type="submit" class="btn btn-success">Simpan</button>
-                        <a href="?q=asrama" class="btn btn-secondary">Kembali</a>
+                        <a href="?q=kamar" class="btn btn-secondary">Kembali</a>
                     </form>
                 </div>
             </div>
