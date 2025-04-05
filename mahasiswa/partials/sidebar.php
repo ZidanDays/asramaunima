@@ -15,6 +15,19 @@
             </a>
         </li>
 
+        <li class="nav-item">
+            <a class="nav-link" href="?q=lapor_fasilitas">
+                <span class="icon-bg"><i class="mdi mdi-cube menu-icon"></i></span>
+                <span class="menu-title">Lapor Fasilitas</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="?q=info">
+                <span class="icon-bg"><i class="mdi mdi-cube menu-icon"></i></span>
+                <span class="menu-title">Info</span>
+            </a>
+        </li>
+
 
         <!-- <li class="nav-item sidebar-user-actions">
             <div class="sidebar-user-menu">

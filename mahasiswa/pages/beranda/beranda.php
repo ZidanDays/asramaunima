@@ -11,6 +11,8 @@ include '../conf/conf.php';
 if ($_POST) {
     $kamar_id = $_POST['kamar_id'];
     // $mahasiswa = $_POST['mahasiswa'];
+
+    // encrypt dan input ke table
     $status_pembayaran = encryptData('pending'); // Misalnya, default 'pending'
     $conn->query("INSERT INTO pemesanan_kamar (kamar_id, mahasiswa_id, status_pembayaran) VALUES ($kamar_id, '$idMhs', '$status_pembayaran')");
     $conn->query("UPDATE kamar SET status='belum bayar' WHERE id=$kamar_id");
@@ -45,8 +47,8 @@ $asramas = $conn->query("SELECT kamar.*, asrama.nama, asrama.kapasitas FROM kama
                                 onchange="getKamarKosong()">
                                 <option value="">-- Pilih Asrama --</option>
                                 <?php 
-        $asramas = $conn->query("SELECT * FROM asrama");
-        while ($row = $asramas->fetch_assoc()) : ?>
+                                $asramas = $conn->query("SELECT * FROM asrama");
+                                while ($row = $asramas->fetch_assoc()) : ?>
                                 <option value="<?= $row['id'] ?>">Asrama <?= $row['nama'] ?></option>
                                 <?php endwhile; ?>
                             </select>
@@ -57,6 +59,11 @@ $asramas = $conn->query("SELECT kamar.*, asrama.nama, asrama.kapasitas FROM kama
                             <select name="kamar_id" id="kamar_id" class="form-control" required>
                                 <option value="">-- Pilih Kamar --</option>
                             </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Fasilitas</label>
+                            <input type="text" name="fasilitas" id="fasilitas" class="form-control" required readonly>
                         </div>
 
                         <button type="submit" class="btn btn-success">Simpan</button>
@@ -72,9 +79,11 @@ $asramas = $conn->query("SELECT kamar.*, asrama.nama, asrama.kapasitas FROM kama
 function getKamarKosong() {
     var asrama_id = document.getElementById("asrama_id").value;
     var kamarSelect = document.getElementById("kamar_id");
+    var fasilitasInput = document.getElementById("fasilitas");
 
-    // Kosongkan dropdown kamar terlebih dahulu
+    // Kosongkan dropdown kamar & input fasilitas
     kamarSelect.innerHTML = '<option value="">-- Pilih Kamar --</option>';
+    fasilitasInput.value = '';
 
     if (asrama_id) {
         fetch('get_kamar.php?asrama_id=' + asrama_id)
@@ -83,11 +92,26 @@ function getKamarKosong() {
                 data.forEach(kamar => {
                     var option = document.createElement("option");
                     option.value = kamar.id;
-                    option.textContent = "Kamar " + kamar.nomor_kamar;
+                    option.textContent = "Kamar Nomor " + kamar.nomor_kamar;
+                    option.dataset.fasilitas = kamar.fasilitas; // Simpan data fasilitas
                     kamarSelect.appendChild(option);
                 });
             })
             .catch(error => console.error('Error fetching kamar:', error));
     }
 }
+
+// Event listener untuk mengisi fasilitas otomatis saat kamar dipilih
+document.getElementById("kamar_id").addEventListener("change", function() {
+    var selectedOption = this.options[this.selectedIndex];
+    var fasilitasInput = document.getElementById("fasilitas");
+
+    if (selectedOption.value) {
+        // Pastikan dataset.fasilitas tidak undefined, jika ya, beri nilai default kosong
+        fasilitasInput.value = selectedOption.dataset.fasilitas !== undefined ? selectedOption.dataset
+            .fasilitas : '';
+    } else {
+        fasilitasInput.value = '';
+    }
+});
 </script>

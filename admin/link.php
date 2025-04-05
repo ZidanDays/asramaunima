@@ -39,6 +39,34 @@ if (!empty($page)) {
             break; 
         //end of kamar
 
+
+        
+            // laporfasilitas
+            case 'lapor_fasilitas':
+                include './pages/lapor_fasilitas/index.php';
+                break;
+            case 'proses_lapor':
+                include './pages/lapor_fasilitas/proses_lapor.php';
+                break;
+
+            case 'ubah_status_laporan':
+                include './pages/lapor_fasilitas/ubah_status_laporan.php';
+                break;
+                // end of lapor fasilitas
+
+        // verifikasi pembayaran
+        case 'verifikasi_pembayaran':
+            include './pages/verifikasi_pembayaran/index.php';
+            break;
+        // end of verifikasi pembayaran
+
+
+        // lihat bukti
+        case 'lihat_bukti':
+            include './pages/lihat_bukti/index.php';
+            break;
+        // end of lihat bukti
+
         case 'logout':
             include './pages/logout/logout.php';
             break;

@@ -19,6 +19,12 @@
                 <span class="menu-title">kamar</span>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="?q=lapor_fasilitas">
+                <span class="icon-bg"><i class="mdi mdi-contacts menu-icon"></i></span>
+                <span class="menu-title">Laporan fasilitas</span>
+            </a>
+        </li>
 
 
         <li class="nav-item sidebar-user-actions">

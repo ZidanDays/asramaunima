@@ -20,7 +20,7 @@ $result = $conn->query("SELECT * FROM asrama");
                             <tr>
                                 <th>No</th>
                                 <th>Nama Asrama</th>
-                                <th>Kapasitas</th>
+                                <!-- <th>Kapasitas</th>  tambahkan di bawah // <td>{$row['kapasitas']}</td> -->
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -31,7 +31,7 @@ $result = $conn->query("SELECT * FROM asrama");
                                             echo "<tr>
                                                     <td>{$no}</td>
                                                     <td>{$row['nama']}</td>
-                                                    <td>{$row['kapasitas']}</td>
+
                                                     <td>
                                                         <a href='?q=asrama-edit&id={$row['id']}' class='btn btn-warning btn-sm'>Edit</a>
                                                         <a href='?q=asrama-hapus&id={$row['id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Yakin ingin menghapus?\")'>Hapus</a>

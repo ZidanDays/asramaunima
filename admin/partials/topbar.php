@@ -1,8 +1,30 @@
+<?php
+session_start();
+include '../conf/config.php';
+$user_id = $_SESSION['user_id'];
+$queryNotif = "SELECT * FROM notifikasi WHERE user_id = ? ORDER BY created_at DESC LIMIT 5";
+$stmt = $conn->prepare($queryNotif);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$resultNotif = $stmt->get_result();
+
+
+$queryJumlah = "SELECT COUNT(*) as jumlah FROM notifikasi WHERE user_id = ? AND status = 'belum_dibaca'";
+$stmtJumlah = $conn->prepare($queryJumlah);
+$stmtJumlah->bind_param("i", $user_id);
+$stmtJumlah->execute();
+$resultJumlah = $stmtJumlah->get_result()->fetch_assoc();
+$jumlahNotif = $resultJumlah['jumlah'];
+
+?>
+
 <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo" href="index.html"><img src="../assets/images/logo.svg" alt="logo" /></a>
-        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="../assets/images/logo-mini.svg"
-                alt="logo" /></a>
+
+        <a href="index.php"><img src="../assets/images/AUW.png" style="width: 30%; margin-top: 30px;" alt="logo" /></a>
+        <!-- <a class="navbar-brand brand-logo" href="index.php"><img src="../assets/images/logo.svg" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="index.php"><img src="../assets/images/logo-mini.svg"
+                alt="logo" /></a> -->
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-stretch">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -115,6 +137,9 @@
                     <h6 class="p-3 mb-0 text-center">4 new messages</h6>
                 </div>
             </li> -->
+
+
+            <!-- notifikasi bell -->
             <li class="nav-item dropdown">
                 <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
                     data-toggle="dropdown">
@@ -125,46 +150,30 @@
                     aria-labelledby="notificationDropdown">
                     <h6 class="p-3 mb-0 bg-primary text-white py-4">Notifications</h6>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item preview-item">
-                        <div class="preview-thumbnail">
-                            <div class="preview-icon bg-success">
-                                <i class="mdi mdi-calendar"></i>
-                            </div>
-                        </div>
-                        <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                            <h6 class="preview-subject font-weight-normal mb-1">Event today</h6>
-                            <p class="text-gray ellipsis mb-0"> Just a reminder that you have an event today
-                            </p>
-                        </div>
-                    </a>
+                    <span class="count-symbol bg-danger"><?= $jumlahNotif ?></span>
+                    <!-- Optional: tambahkan hitung notifikasi belum dibaca -->
+                    <?php while ($notif = $resultNotif->fetch_assoc()): ?>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item preview-item">
                         <div class="preview-thumbnail">
-                            <div class="preview-icon bg-warning">
-                                <i class="mdi mdi-settings"></i>
+                            <div class="preview-icon bg-<?= htmlspecialchars($notif['warna']) ?>">
+                                <i class="mdi mdi-<?= htmlspecialchars($notif['icon']) ?>"></i>
                             </div>
                         </div>
                         <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                            <h6 class="preview-subject font-weight-normal mb-1">Settings</h6>
-                            <p class="text-gray ellipsis mb-0"> Update dashboard </p>
+                            <h6 class="preview-subject font-weight-normal mb-1"><?= htmlspecialchars($notif['judul']) ?>
+                            </h6>
+                            <p class="text-gray ellipsis mb-0"><?= htmlspecialchars($notif['pesan']) ?></p>
                         </div>
                     </a>
+                    <?php endwhile; ?>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item preview-item">
-                        <div class="preview-thumbnail">
-                            <div class="preview-icon bg-info">
-                                <i class="mdi mdi-link-variant"></i>
-                            </div>
-                        </div>
-                        <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                            <h6 class="preview-subject font-weight-normal mb-1">Launch Admin</h6>
-                            <p class="text-gray ellipsis mb-0"> New admin wow! </p>
-                        </div>
+                    <a href="dsvdvs">
+                        <h6 class="p-3 mb-0 text-center">See all notifications</h6>
                     </a>
-                    <div class="dropdown-divider"></div>
-                    <h6 class="p-3 mb-0 text-center">See all notifications</h6>
                 </div>
             </li>
+            <!-- end of notifikasi -->
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
             data-toggle="offcanvas">

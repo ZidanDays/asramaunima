@@ -7,10 +7,11 @@ $asramas = $conn->query("SELECT * FROM asrama");
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $asrama_id = $_POST['asrama_id'];
     $nomor_kamar = $_POST['nomor_kamar'];
+    $fasilitas = $_POST['fasilitas'];
 
     // Gunakan prepared statement untuk keamanan
-    $stmt = $conn->prepare("INSERT INTO kamar (asrama_id, nomor_kamar) VALUES (?, ?)");
-    $stmt->bind_param("ii", $asrama_id, $nomor_kamar);
+    $stmt = $conn->prepare("INSERT INTO kamar (asrama_id, nomor_kamar, fasilitas ) VALUES (?, ?, ?)");
+    $stmt->bind_param("iis", $asrama_id, $nomor_kamar, $fasilitas);
 
     if ($stmt->execute()) {
         echo "<script>alert('Data berhasil ditambahkan'); window.location='index.php?q=kamar';</script>";
@@ -43,6 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="form-group">
                             <label>Nomor Kamar</label>
                             <input type="number" name="nomor_kamar" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Fasilitas</label>
+                            <input type="text" name="fasilitas" class="form-control" required>
                         </div>
 
                         <button type="submit" class="btn btn-success">Simpan</button>

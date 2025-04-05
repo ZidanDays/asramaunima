@@ -47,6 +47,30 @@ if (!empty($page)) {
 
         //end of kamar saya
 
+
+        // pembayaran
+            case 'upload_bukti_pembayaran':
+                include './pages/upload_bukti_pembayaran/index.php';
+                break;
+        // end of permbayaran
+
+        case 'info':
+            include './pages/info/index.php';
+            break;
+
+            // laporfasilitas
+        case 'lapor_fasilitas':
+            include './pages/lapor_fasilitas/index.php';
+            break;
+        case 'proses_lapor':
+            include './pages/lapor_fasilitas/proses_lapor.php';
+            break;
+            // end of lapor fasilitas
+
+            case 'notifikasi':
+                include './pages/notifikasi/notifikasi.php';
+                break;
+
         case 'logout':
             include './pages/logout/logout.php';
             break;

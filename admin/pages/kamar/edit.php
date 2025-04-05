@@ -10,8 +10,9 @@ if (isset($_GET['id'])) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $status = $conn->real_escape_string($_POST['status']); // Mencegah SQL Injection
-
-    $query = "UPDATE kamar SET status='$status' WHERE id=$id";
+    $fasilitas = $_POST['fasilitas'];
+    
+    $query = "UPDATE kamar SET status='$status', fasilitas='$fasilitas' WHERE id=$id";
     if ($conn->query($query) === TRUE) {
         echo "<script>alert('Data berhasil diupdate'); window.location='index.php?q=kamar';</script>";
     } else {
@@ -41,6 +42,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="text" name="nomor_kama" class="form-control" readonly
                                 value="<?php echo htmlspecialchars($data['nomor_kamar'] ?? ''); ?>" required>
                         </div>
+
+                        <div class="form-group">
+                            <label>Fasilitas</label>
+                            <input type="text" name="fasilitas" class="form-control"
+                                value="<?php echo ($data['fasilitas'] ?? ''); ?>" required>
+
+                        </div>
+
                         <div class="form-group">
                             <label>Status</label>
                             <select name="status" class="form-control">
