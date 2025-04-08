@@ -67,6 +67,10 @@ if (!empty($page)) {
             break;
         // end of lihat bukti
 
+        case 'notifikasi':
+            include './pages/notifikasi/notifikasi.php';
+            break;
+
         case 'logout':
             include './pages/logout/logout.php';
             break;

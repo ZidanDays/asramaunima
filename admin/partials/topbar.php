@@ -144,16 +144,16 @@ $jumlahNotif = $resultJumlah['jumlah'];
                 <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
                     data-toggle="dropdown">
                     <i class="mdi mdi-bell-outline"></i>
-                    <span class="count-symbol bg-danger"></span>
+                    <?php if ($jumlahNotif > 0): ?>
+                    <span class="count-symbol bg-danger">__<?= $jumlahNotif ?></span>
+                    <?php endif; ?>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                     aria-labelledby="notificationDropdown">
-                    <h6 class="p-3 mb-0 bg-primary text-white py-4">Notifications</h6>
+                    <h6 class="p-3 mb-0 bg-primary text-white py-4">Notifikasi Anda</h6>
                     <div class="dropdown-divider"></div>
-                    <span class="count-symbol bg-danger"><?= $jumlahNotif ?></span>
-                    <!-- Optional: tambahkan hitung notifikasi belum dibaca -->
+
                     <?php while ($notif = $resultNotif->fetch_assoc()): ?>
-                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item preview-item">
                         <div class="preview-thumbnail">
                             <div class="preview-icon bg-<?= htmlspecialchars($notif['warna']) ?>">
@@ -163,13 +163,14 @@ $jumlahNotif = $resultJumlah['jumlah'];
                         <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
                             <h6 class="preview-subject font-weight-normal mb-1"><?= htmlspecialchars($notif['judul']) ?>
                             </h6>
-                            <p class="text-gray ellipsis mb-0"><?= htmlspecialchars($notif['pesan']) ?></p>
+                            <p class="text-gray ellipsis mb-0"><?= strip_tags($notif['pesan']) ?></p>
                         </div>
                     </a>
-                    <?php endwhile; ?>
                     <div class="dropdown-divider"></div>
-                    <a href="dsvdvs">
-                        <h6 class="p-3 mb-0 text-center">See all notifications</h6>
+                    <?php endwhile; ?>
+
+                    <a href="index.php?q=notifikasi">
+                        <h6 class="p-3 mb-0 text-center">Lihat semua notifikasi</h6>
                     </a>
                 </div>
             </li>

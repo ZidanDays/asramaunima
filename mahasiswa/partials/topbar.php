@@ -146,7 +146,7 @@ $jumlahNotif = $countData['total'];
                     data-toggle="dropdown">
                     <i class="mdi mdi-bell-outline"></i>
                     <?php if ($jumlahNotif > 0): ?>
-                    <span class="count-symbol bg-danger">..<?= $jumlahNotif ?></span>
+                    <span class="count-symbol bg-danger">__<?= $jumlahNotif ?></span>
                     <?php endif; ?>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
