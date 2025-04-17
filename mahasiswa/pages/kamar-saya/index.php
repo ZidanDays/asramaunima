@@ -20,8 +20,8 @@ $stmtCek->bind_param("is", $idMhs, $bulan_ini);
 $stmtCek->execute();
 $resultCek = $stmtCek->get_result();
 
-// if ($resultCek->num_rows == 0 && date('d') >= 20) {
-if ($resultCek->num_rows == 0 && date('d') >= 1) {
+if ($resultCek->num_rows == 0 && date('d') >= 20) {
+// if ($resultCek->num_rows == 0 && date('d') >= 1) {
     // Ambil kamar yang dipesan oleh mahasiswa
     $queryKamar = "SELECT kamar_id FROM pemesanan_kamar WHERE mahasiswa_id = ?";
     $stmtKamar = $conn->prepare($queryKamar);

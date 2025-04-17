@@ -5,7 +5,8 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $kamarId = $_GET['kamarId'];
     $conn->query("UPDATE kamar SET status='kosong' WHERE id=$kamarId");
-    $query = "DELETE FROM pemesanan_kamar WHERE id = $id";
+    // $query = "DELETE FROM pemesanan_kamar WHERE id = $id";
+    $query = "DELETE FROM pemesanan_kamar WHERE kamar_id = $id";
 
     if ($conn->query($query) === TRUE) {
         echo "<script>alert('Data berhasil dihapus'); window.location='index.php?q=kamar-saya';</script>";

@@ -79,6 +79,7 @@ $resultPembayaran = $conn->query($queryPembayaran);
                                 <th>Bulan</th>
                                 <th>Nomor Kamar</th>
                                 <th>Status</th>
+                                <th>Password</th>
                                 <th>Bukti Pembayaran</th>
                                 <th>Aksi</th>
                             </tr>
@@ -120,6 +121,7 @@ $resultPembayaran = $conn->query($queryPembayaran);
                                         class="btn btn-success btn-sm">Verifikasi</a>
                                     <?php endif; ?>
                                 </td>
+                                <td><?= htmlspecialchars($row['password']) ?></td>
                             </tr>
                             <?php 
                                 $no++;

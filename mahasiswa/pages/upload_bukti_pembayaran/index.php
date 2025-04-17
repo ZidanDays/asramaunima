@@ -15,9 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Enkripsi file
         if (encryptFile($file_tmp, $encrypted_file, $password)) {
             // Simpan nama file ke database
-            $query = "UPDATE pembayaran SET bukti_pembayaran=? WHERE id=?";
+            $query = "UPDATE pembayaran SET bukti_pembayaran=?, password=? WHERE id=?";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param("si", $file_name, $pembayaran_id);
+            $stmt->bind_param("ssi", $file_name, $password, $pembayaran_id);
 
             if ($stmt->execute()) {
                 // === Tambahkan Notifikasi untuk Admin ===
